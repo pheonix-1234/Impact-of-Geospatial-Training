@@ -23,7 +23,7 @@ Those interested in using the code from this repository may either obtain de-ide
 ### Ensuring data for running the code
 If you use raw pre- and post-data csv files and want to use data_filter.R, ensure that raw data is found in an "Original" folder, and the resulting filtered data is saved in a "Filtered" folder to keep things organized. 
 
-In the "Original Folder", ensure that the csv files provided in this repository are in a subfolder called "Manual Processing". If you prefer to store these csv files that organize the columns else where, ensure to make the proper changes in the "read.csv" lines of the R-script. If your raw data has different column names, you can edit the column names in "pre_rename_columns.csv" and "pre_columns_to_process.csv".
+In the "Original" Folder, ensure that it contains the "Manual Processing" folder in this repository as a subfolder. If you prefer to store these csv files that organize the columns else where, ensure to make the proper changes in the "read.csv" lines of the R-script. If your raw data has different column names, you can edit the column names in "pre_rename_columns.csv" and "pre_columns_to_process.csv".
 
 Filtered datasets are used for the remaining R-Scripts, including a manually-created csv files with paritipant's evaluated score on an objectively graded question. 
 
