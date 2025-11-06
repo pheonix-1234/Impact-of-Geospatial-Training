@@ -10,15 +10,23 @@ Those interested in using the code from this repository may either obtain de-ide
 ## Getting Started
 ### Clone the repository
 ```bash
-   git clone -b main https://github.com/....
-   cd ...
+   git clone -b main https://github.com/pheonix-1234/Impact-of-Geospatial-Training.git
    ```
 
 ### Ensuring data for running the code
+If dealing with raw pre- and post-data, ensure it is found in the "Original" folder, and the filtered data from the data_filter.R is saved in "Filtered" folder. Please note that the "Major" column can be over written by the user's discretion if raw entries can be catogrized (e.g. "Commerce" and "Business" can be overwritten as "Finance"). The filtered datasets are used for the remaining R Scripts in addition to the manually evaluated score. 
 
 ### Install the necessary packages
+```bash
+   install.packages(c("dplyr","tidyverse","stringr","openxlsx","purrr","effectsize","effsize","tidyr","psych"))
+   ```
+You can also install other packages as you run and modify the code.
 
 ### Ensuring folder for storing results
+The code is such that results will be stored in the "Results" folder. It is in this repository and ensure it also exists while you run the each R-scripts.
+
+## Running the Code
+Once you have followed the instruction in the "Gettign Started" section, run and modify the code at your discretion. Results and statistical analyses will depend on the datasets used.
 
 ## Acknowledgement
 This work is supported by the Pedagogical Research Fund at the University of Toronto Mississauga. We sincerely thank research assistants Peter Haoxuan Ge for selecting and modifying the training, Meggie Chan for drafting the initial survey instrument, and Rosalinda Hefan Zhang for collaborative thematic coding with the first author. We highly appreciate Professor Joseph Leydon’s feedback throughout the different phases of the study.
