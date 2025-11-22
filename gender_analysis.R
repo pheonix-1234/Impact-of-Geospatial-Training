@@ -4,8 +4,8 @@ library(tidyverse)
 library(openxlsx)
 library(purrr)
 
-# Set working directory and load datasets
-setwd()
+#-----------------------------------------SET WORKING DIRECTORY AND LOAD DATASETS-------------------------------
+setwd() # Set to your prefered Working directory
 
 # Load and filter datasets
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
@@ -40,6 +40,7 @@ columns_to_test_post <- c("Section2Q1", "Section2Q2", "Section2Q3", "Section2Q4"
 
 columns_to_test_score <- c("Pre_Sys","Pre_Fut","Pre_Str","Pre_Val","Post_Sys","Post_Fut","Post_Str","Post_Val")
 
+#-----------------------------------------MAIN FUNCTION---------------------------------------------
 perform_t_test <- function(data, columns_to_test) {
   results <- list()  # Use a list to store results efficiently
   
