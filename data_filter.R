@@ -4,7 +4,7 @@ library(openxlsx)
 library(tidyverse)
 
 #-------------------- LOAD AND FILTER DATA --------------------
-setwd() # Set to your prefered Working directory
+setwd() # Set to your preferred Working directory
 
 #Load CSV file for data and score
 predata <- read.csv("./csv files/Original/UTF-8anonym_pre_survey_bothTerms.csv") %>% 
