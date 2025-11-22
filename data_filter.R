@@ -3,7 +3,7 @@ library(stringr)
 library(openxlsx)
 library(tidyverse)
 
-#_______________________-----_______________ Load datasets, find common intersection, and filter out blanks_______________________________________
+#-------------------- LOAD AND FILTER DATA --------------------
 setwd() # Set to your prefered Working directory
 
 #Load CSV file for data and score
