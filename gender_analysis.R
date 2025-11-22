@@ -5,7 +5,7 @@ library(openxlsx)
 library(purrr)
 
 #-----------------------------------------SET WORKING DIRECTORY AND LOAD DATASETS-------------------------------
-setwd() # Set to your prefered Working directory
+setwd() # Set to your preferred Working directory
 
 # Load and filter datasets
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
