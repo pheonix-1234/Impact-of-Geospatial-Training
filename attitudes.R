@@ -6,8 +6,8 @@ library(tidyverse)
 library(purrr)
 library(tidyr)
 
-#-------------------- Load and Filter Data --------------------
-setwd() # Set to your prefered Working directory
+#-------------------- LOAD AND FILTER DATA --------------------
+setwd() # Set to your preferred Working directory
 
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
 postdata <- read.csv("./csv files/Filtered/_Majors/filtered_postdata_majors.csv")
