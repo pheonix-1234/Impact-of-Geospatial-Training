@@ -4,9 +4,9 @@ library(tidyverse)
 library(effectsize) 
 library(purrr)
 
-setwd()
+#-------------------- LOAD AND FILTER DATA --------------------
+setwd() # Set to your preferred Working directory
 
-# Load and filter datasets
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
 
 
@@ -57,7 +57,8 @@ t_test_function <- function(pre, post, normality_pre, normality_post, competency
   test_result <- if (is_normal) t.test(pre, post, paired = TRUE) else wilcox.test(pre, post, paired = TRUE, exact = FALSE)
   
   # Calculate Effect Size based on normality
-  effect_size <- if (is_normal) round(cohen.d(pre, post, paired = TRUE)$estimate, 2) else round(rank_biserial(pre, post, paired = TRUE)$r_rank_biserial, 2)
+  effect_size <- if (is_normal) cohen.d(pre, post, paired = TRUE) else rank_biserial(pre, post, paired = TRUE)
+  cliffdelta <- cliff.delta(pre, post)
   
   # Prepare result data frame
   data.frame(
@@ -67,7 +68,13 @@ t_test_function <- function(pre, post, normality_pre, normality_post, competency
     IQR_Post = round(IQR(post, na.rm = TRUE), 2),
     W_Statistic = ifelse(is_normal, NA, round(test_result$statistic, 2)),
     P_Value = round(test_result$p.value, 4),
-    Effect_Size = effect_size
+    effect_size = ifelse(is_normal, effect_size$estimate, effect_size$r_rank_biserial),
+    eff_CI = ifelse(is_normal, effect_size$conf.int, effect_size$CI),
+    eff_CI_upper = ifelse(is_normal, effect_size$conf.int$upper, effect_size$CI_high),
+    eff_CI_lower = ifelse(is_normal, effect_size$conf.int$lower, effect_size$CI_low),
+    effect_size_type = ifelse(is_normal, "Cohen's D", "Rank-Biserial Correlation"),
+    cliff_delta = cliffdelta$estimate,
+    cliff_delta_magnitude = cliffdelta$magnitude
   )
 }
 
