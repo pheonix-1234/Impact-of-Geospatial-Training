@@ -7,7 +7,7 @@ library(purrr)
 library(tidyr)
 
 #-------------------- Load and Filter Data --------------------
-setwd("") # Set to your prefered Working directory
+setwd() # Set to your prefered Working directory
 
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
 postdata <- read.csv("./csv files/Filtered/_Majors/filtered_postdata_majors.csv")
