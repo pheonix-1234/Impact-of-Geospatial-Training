@@ -7,7 +7,7 @@ library(purrr)
 library(tidyr)
 
 #-------------------- Load and Filter Data --------------------
-setwd("~/Desktop/Data Analysis Summer")
+setwd("") # Set to your prefered Working directory
 
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
 postdata <- read.csv("./csv files/Filtered/_Majors/filtered_postdata_majors.csv")
@@ -64,22 +64,29 @@ perform_t_tests <- function(pre, post, norm, items) {
     if (anyNA(row)) return(tibble(Question = .x, Test_Type = NA, W_Statistic = NA, P_Value = NA, Effect_Size = NA))
     
     # p-value from shapiro tests (above 0.05 means data exhibits normality)
-    normal <- row$pre_pvalue >= 0.05 & row$post_pvalue >= 0.05
+    is_normal <- row$pre_pvalue >= 0.05 & row$post_pvalue >= 0.05
     
-    test <- if (normal) t.test(p, q, paired = TRUE) else wilcox.test(p, q, paired = TRUE, exact = FALSE)
+    test <- if (is_normal) t.test(p, q, paired = TRUE) else wilcox.test(p, q, paired = TRUE, exact = FALSE)
     
     # Extracting W statistic and effect size from the Wilcoxon/t-test result
-    eff_size <- if (normal) cohen.d(p, q, paired = TRUE)$estimate else rank_biserial(p, q, paired = TRUE)$r_rank_biserial
-    W_statistic <- if (normal) NA else test$statistic
+    effect_size <- if (is_normal) cohen.d(p, q, paired = TRUE) else rank_biserial(p, q, paired = TRUE)
+    cliffdelta <- cliff.delta(p, q)
+    W_statistic <- if (is_normal) NA else test$statistic
     
     tibble(
       Question = .x,
-      Test_Type = ifelse(normal, "Paired T-test", "Wilcoxon Signed-Rank Test"),
+      Test_Type = ifelse(is_normal, "Paired T-test", "Wilcoxon Signed-Rank Test"),
       IQR_Pre = IQR(p, na.rm = TRUE),
       IQR_Post = IQR(q, na.rm = TRUE),
-      W_Statistic = round(W_statistic, 2),  # Shows W stat only for Wilcoxon test
+      W_Statistic = round(W_statistic, 2),  
       P_Value = round(test$p.value, 4),
-      Effect_Size = round(eff_size, 2)
+      eff_size = ifelse(is_normal, effect_size$estimate, effect_size$r_rank_biserial),
+      eff_CI = ifelse(is_normal, effect_size$conf.int, effect_size$CI),
+      eff_CI_upper = ifelse(is_normal, effect_size$conf.int$upper, effect_size$CI_high),
+      eff_CI_lower = ifelse(is_normal, effect_size$conf.int$lower, effect_size$CI_low),
+      effect_size_type = ifelse(is_normal, "Cohen's D", "Rank-Biserial Correlation"),
+      cliff_delta = cliffdelta$estimate,
+      cliff_delta_magnitude = cliffdelta$magnitude
     )
   })
 }
