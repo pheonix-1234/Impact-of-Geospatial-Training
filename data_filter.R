@@ -4,7 +4,7 @@ library(openxlsx)
 library(tidyverse)
 
 #_______________________-----_______________ Load datasets, find common intersection, and filter out blanks_______________________________________
-setwd()
+setwd() # Set to your prefered Working directory
 
 #Load CSV file for data and score
 predata <- read.csv("./csv files/Original/UTF-8anonym_pre_survey_bothTerms.csv") %>% 
