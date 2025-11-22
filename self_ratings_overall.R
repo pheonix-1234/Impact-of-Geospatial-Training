@@ -8,8 +8,8 @@ library(effectsize) # for rank biserial
 library(psych)
 library(purrr)
 
-#-----------------------------------------Load datasets, find common intersection, and filter out blanks-----------------------------------------
-setwd()
+#-------------------- LOAD AND FILTER DATA --------------------
+setwd() # Set to your preferred Working directory
 
 # Load and filter datasets
 predata <- read.csv("./csv files/Filtered/_Majors/filtered_predata_majors.csv")
@@ -95,7 +95,8 @@ perform_t_tests <- function(data, normality) {
     # Choose test type and effect size calculation based on normality
     is_normal <- pre_pvalue >= 0.05 & post_pvalue >= 0.05
     test <- if (is_normal) t.test(pre_scores, post_scores, paired = TRUE) else wilcox.test(pre_scores, post_scores, paired = TRUE, exact = FALSE)
-    effect_size <- if (is_normal) round(cohen.d(pre_scores, post_scores)$estimate, 2) else round(rank_biserial(pre_scores, post_scores, paired = TRUE)$r_rank_biserial, 2)
+    effect_size <- if (is_normal) cohen.d(pre_scores, post_scores) else rank_biserial(pre_scores, post_scores, paired = TRUE)
+    cliffdelta <- cliff.delta(pre_scores, post_scores)
     
     # Return results in a data frame
     data.frame(
@@ -105,8 +106,13 @@ perform_t_tests <- function(data, normality) {
       IQR_Post = round(IQR(post_scores, na.rm = TRUE), 2),
       W_Statistic = ifelse(is_normal, NA, round(test$statistic, 2)),
       test_pvalue = round(test$p.value, 5),
-      effect_size = effect_size,
-      effect_size_type = ifelse(is_normal, "Cohen's D", "Rank-Biserial Correlation")
+      effect_size = ifelse(is_normal, effect_size$estimate, effect_size$r_rank_biserial),
+      eff_CI = ifelse(is_normal, effect_size$conf.int, effect_size$CI),
+      eff_CI_upper = ifelse(is_normal, effect_size$conf.int$upper, effect_size$CI_high),
+      eff_CI_lower = ifelse(is_normal, effect_size$conf.int$lower, effect_size$CI_low),
+      effect_size_type = ifelse(is_normal, "Cohen's D", "Rank-Biserial Correlation"),
+      cliff_delta = cliffdelta$estimate,
+      cliff_delta_magnitude = cliffdelta$magnitude
     )
   })
 }
